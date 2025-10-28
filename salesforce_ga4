@@ -1,1 +1,28 @@
+#####This is a simplified example of the code used by International Hub to join 'old global' Salesforce with Google Analytics
 
+
+###Getting some basic data from Salesforce
+SELECT
+CloseDate,
+AccountId,
+Donor_owner__c,
+Donation_Type_Old__c,
+Name,
+Transaction_ID__c,
+FuturePay_Description__c,
+FuturePay_Agreement_ID__c,
+USD_Amount__c,
+
+####Pulling in some dimensions from Google Analytics, in this example attribution information
+ga4.source_   AS ga4_source,
+ga4.medium    AS ga4_medium,
+ga4.campaign  AS ga4_campaign,
+ga4.channel_group AS ga4_channel,
+
+FROM `unhcr-dmdl-production.salesforce.SF_Opportunity` opp
+WHERE OwnerId = '00557000006XdllAAC'
+AND REGEXP_CONTAINS(StageName, 'SETTLED')
+
+#####Joing with GA4 mart data, this is going back to at least 2018 and is for all the markets sending GA data to HQ
+
+LEFT JOIN `unhcr-global-dl-raw-stg-prod.analytics_356831878.new_ga4_transactions_deduped_v4` ga4 ON ga4.transaction_id = opp.Transaction_ID__c
