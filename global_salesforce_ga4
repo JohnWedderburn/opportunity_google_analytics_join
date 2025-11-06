@@ -25,4 +25,7 @@ AND REGEXP_CONTAINS(StageName, 'SETTLED')
 
 #####Joing with GA4 mart data, this is going back to at least 2018 and is for all the markets sending GA data to HQ
 
-LEFT JOIN `unhcr-global-dl-raw-stg-prod.analytics_356831878.new_ga4_transactions_deduped_v4` ga4 ON ga4.transaction_id = opp.Transaction_ID__c
+LEFT JOIN `unhcr-global-dl-ana-prod.ga4_mart.purchases` ga4 ON ga4.transaction_id = opp.Transaction_ID__c
+
+###Requires some additional code to update RG gifts with the same attribution as the first acquisition
+
